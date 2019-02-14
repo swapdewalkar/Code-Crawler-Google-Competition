@@ -15,6 +15,7 @@ output_folder=sys.argv[1]
 token="MjdhMTU1ZWJhMjQxYzBhZjE1OTBiNDVjNTliMzIwNDZ8fDE1NTAwODk1NDY2NDcyMzI="
 problem_id="5753053697277952"
 contest_id="4314486"
+no_of_participants=5950
 FLAG=1 # make 0 if you want to save without username
 
 def get_page_links(NO_OF_PARTICIPANTS,contest_id,token):
@@ -32,7 +33,7 @@ def get_user_links(usernames,contest_id,token,problem_id):
 	print("No of usernames found: "+str(len(links)))
 	return links
 
-pagelinks=get_page_links(5950,contest_id,token)
+pagelinks=get_page_links(no_of_participants,contest_id,token)
 usernames=[]
 i=1
 for link in pagelinks:
@@ -41,7 +42,7 @@ for link in pagelinks:
 	for row in res['rows']:
 		usernames+=[row['n']]
 	i += 1
-	
+	break
 os.mkdir(output_folder)
 code_no=1
 userlinks=get_user_links(usernames,contest_id,token,problem_id)
@@ -50,6 +51,7 @@ for link,username in zip(userlinks,usernames):
 		name = username
 	else:
 		name= "Code"+str(code_no)
+	print("Fetching code "+str(code_no)+"/"+str(len(userlinks)))
 	urllib.request.urlretrieve(link,output_folder+"/"+name+".zip")
 	code_no+=1
 	
